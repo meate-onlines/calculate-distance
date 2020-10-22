@@ -1,5 +1,5 @@
 {
-    "name": "dashan/calculateDistance",
+    "name": "bastphp/calculate-distance",
     "description": "计算坐标间的距离",
     "type": "library",
     "license": "MIT",
@@ -10,8 +10,8 @@
     },
     "authors": [
         {
-            "name": "dashanedu",
-            "email": "dashanedu@163.com"
+            "name": "bastphp",
+            "email": "fmj_lg@163.com"
         }
     ],
     "autoload": {
