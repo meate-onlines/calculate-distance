@@ -1,0 +1,24 @@
+{
+    "name": "dashan/calculateDistance",
+    "description": "计算坐标间的距离",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.2.0",
+        "illuminate/redis": "^5.5"
+
+    },
+    "authors": [
+        {
+            "name": "dashanedu",
+            "email": "dashanedu@163.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Dashan\\calculateDistance\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
+
