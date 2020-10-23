@@ -3,6 +3,8 @@
 Redis >= 3.2.0
 
 ### Usage
+
+composer require bastphp/calculate-distance
 ```
 <?php
 
