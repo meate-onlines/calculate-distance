@@ -1,8 +1,8 @@
  基于redis的geoHash和坐标距离计算公式实现坐标间的距离计算
 ### Requirements
 Redis >= 3.2.0
-###Usage
 
+### Usage
 ```
 <?php
 
@@ -25,14 +25,11 @@ class TestController extends Controller
         //设置单位
         $distanceObj->setUnit('km')//支持km和m
         ->setOrder('asc')//支持asc和desc
-        ->setLimt(3)//要取的个数
+        ->setLimit(3)//要取的个数
         //->calculateRadius($base,$need,$dis);//计算方圆12km内在给定的坐标内据我最近的三个
         ->calculateOrder($base,$need);//计算给定的坐标距基础坐标的按距离由近到远排序
         
     }
 }
 ```
-###Waring
-formula驱动暂时不支持calculateRadius和
-calculateOrder方法
-
+### formul驱动暂时不支持calculateRadius和calculateOrder方法
