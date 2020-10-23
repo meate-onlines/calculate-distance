@@ -38,12 +38,12 @@ class FormulaCalculate implements Calculate
 
     public function calculateRadius($base, $need, $dis) :array
     {
-
+        return [];
     }
 
     public function calculateOrder($base, $need) :array
     {
-
+        return [];
     }
 
     protected function formula($lng1, $lat1, $lng2, $lat2, $decimal = 2)
