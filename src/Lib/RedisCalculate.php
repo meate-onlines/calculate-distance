@@ -13,7 +13,7 @@ class RedisCalculate implements Calculate
 
     protected $order = 'asc';
 
-    protected $limit = 3;
+    protected $limit = 0;
 
     protected $boundaryLng = [-180,180];
 
@@ -53,12 +53,18 @@ class RedisCalculate implements Calculate
     public function calculateRadius($base, $need, $dis) :array
     {
         $this->geoAdd($need);
-        return Redis::GEORADIUS($this->redisKey,$base[0],$base[1],$dis,$this->unit,'WITHDIST','COUNT',$this->limit,$this->order);
+        if (!empty($this->limit)){
+            return Redis::GEORADIUS($this->redisKey,$base[0],$base[1],$dis,$this->unit,'WITHDIST','COUNT',$this->limit,$this->order);
+        }
+        return Redis::GEORADIUS($this->redisKey,$base[0],$base[1],$dis,$this->unit,'WITHDIST',$this->order);
     }
 
     public function calculateOrder($base, $need) :array
     {
         $this->geoAdd($need);
+        if (!empty($this->limit)){
+            return Redis::GEORADIUS($this->redisKey, $base[0], $base[1], 10000, $this->unit, 'WITHDIST', $this->order);
+        }
         return Redis::GEORADIUS($this->redisKey, $base[0], $base[1], 10000, $this->unit, 'WITHDIST', 'COUNT', $this->limit, $this->order);
     }
 
