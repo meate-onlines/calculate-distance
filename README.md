@@ -32,6 +32,7 @@ class TestController extends Controller
     }
 }
 ```
-
-
+###Waring
+formula驱动暂时不支持calculateRadius和
+calculateOrder方法
 
