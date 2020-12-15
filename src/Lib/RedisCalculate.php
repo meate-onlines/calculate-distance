@@ -52,26 +52,30 @@ class RedisCalculate implements Calculate
 
     public function calculateRadius($base, $need, $dis) :array
     {
+        $base = array_values($base);
         $this->geoAdd($need);
         if (!empty($this->limit)){
-            return Redis::GEORADIUS($this->redisKey,$base[0],$base[1],$dis,$this->unit,'WITHDIST','COUNT',$this->limit,$this->order);
+            return Redis::GEORADIUS($this->redisKey,$base[0],$base[1],$dis,$this->unit,['WITHDIST','COUNT'=>$this->limit,$this->order]);
         }
-        return Redis::GEORADIUS($this->redisKey,$base[0],$base[1],$dis,$this->unit,'WITHDIST',$this->order);
+        return Redis::GEORADIUS($this->redisKey,$base[0],$base[1],$dis,$this->unit,['WITHDIST',$this->order]);
     }
 
     public function calculateOrder($base, $need) :array
     {
+        $base = array_values($base);
         $this->geoAdd($need);
-        if (!empty($this->limit)){
-            return Redis::GEORADIUS($this->redisKey, $base[0], $base[1], 10000, $this->unit, 'WITHDIST', $this->order);
+        if (empty($this->limit)){
+            return Redis::GEORADIUS($this->redisKey, $base[0], $base[1], 10000, $this->unit, ['WITHDIST', $this->order]);
         }
-        return Redis::GEORADIUS($this->redisKey, $base[0], $base[1], 10000, $this->unit, 'WITHDIST', 'COUNT', $this->limit, $this->order);
+        $data = Redis::GEORADIUS($this->redisKey, $base[0], $base[1], 10000, $this->unit, ['WITHDIST', 'COUNT' => $this->limit, $this->order]);
+        return Redis::GEORADIUS($this->redisKey, $base[0], $base[1], 10000, $this->unit, ['WITHDIST', 'COUNT' => $this->limit, $this->order]);
     }
 
     protected function geoAdd($coordinate)
     {
         Redis::pipeline(function ($pipe) use($coordinate){
             foreach ($coordinate as $item) {
+                $item = array_values($item);
                 $pipe->GEOADD($this->redisKey,$item[0],$item[1],$item[2]);
             }
         });
