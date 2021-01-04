@@ -53,6 +53,7 @@ class RedisCalculate implements Calculate
     public function calculateRadius($base, $need, $dis) :array
     {
         $base = array_values($base);
+        $this->__checkTheCoordinate($base);
         $this->geoAdd($need);
         if (!empty($this->limit)){
             return Redis::GEORADIUS($this->redisKey,$base[0],$base[1],$dis,$this->unit,['WITHDIST','COUNT'=>$this->limit,$this->order]);
@@ -63,6 +64,7 @@ class RedisCalculate implements Calculate
     public function calculateOrder($base, $need) :array
     {
         $base = array_values($base);
+        $this->__checkTheCoordinate($base);
         $this->geoAdd($need);
         if (empty($this->limit)){
             return Redis::GEORADIUS($this->redisKey, $base[0], $base[1], 10000, $this->unit, ['WITHDIST', $this->order]);
@@ -76,6 +78,7 @@ class RedisCalculate implements Calculate
         Redis::pipeline(function ($pipe) use($coordinate){
             foreach ($coordinate as $item) {
                 $item = array_values($item);
+                $this->__checkTheCoordinate($item);
                 $pipe->GEOADD($this->redisKey,$item[0],$item[1],$item[2]);
             }
         });
@@ -85,5 +88,17 @@ class RedisCalculate implements Calculate
     {
         return $start . uniqid();
     }
+
+    private function __checkTheCoordinate($item)
+    {
+        if ($item[0] < $this->boundaryLat[0] || $item[0] >= $this->boundaryLat[1]){
+            throw new \Exception("the lat should gte {$this->boundaryLat[0]} and lte {$this->boundaryLat[1]} but you gived is {$item[0]}");
+        }
+
+        if ($item[1] < $this->boundaryLng[0] || $item[1] >= $this->boundaryLng[1]){
+            throw new \Exception("the lng should gte {$this->boundaryLng[0]} and lte {$this->boundaryLng[1]} but you gived is {$item[1]}");
+        }
+    }
+
 
 }
